@@ -34,13 +34,12 @@ public class Movements : MonoBehaviour
     }
     private void MoveWithAim()
     {
-        Vector3 move_dir = PlayerInputs.MoveDir;
-        float mouse_x = Input.GetAxisRaw("Mouse X");
-        //transform.Rotate(Vector3.up * RotSpeed * Time.deltaTime * mouseX);
-        //AimCam.transform.Rotate(Vector3.up * RotSpeed * Time.deltaTime * mouse_x);
-
         Vector3 cameraFwd = Camera.main.transform.forward;
         Vector3 flatten_camera = new Vector3(cameraFwd.x, 0, cameraFwd.z).normalized;
+
+
+        //float target_angle = Mathf.Atan2(flatten_camera.x, flatten_camera.z) * Mathf.Rad2Deg;
+        //float angle = Mathf.SmoothDampAngletten_camera.x, flatten_camera.z) * Mathf.Rad2Deg;
 
         float target_angle = Mathf.Atan2(flatten_camera.x, flatten_camera.z) * Mathf.Rad2Deg;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, target_angle, ref TurnVelo, TurnSmoothTime);
@@ -48,6 +47,7 @@ public class Movements : MonoBehaviour
         //transform.rotation = Quaternion.LookRotation(flatten_camera, transform.up);
         transform.rotation = Quaternion.AngleAxis(angle, transform.up);
 
+        Vector3 move_dir = PlayerInputs.MoveDir;
         transform.Translate(move_dir * Time.deltaTime * Speed);
     }
 
@@ -71,7 +71,7 @@ public class Movements : MonoBehaviour
             /* Vector3 camera_dir = Camera.main.transform.forward;
              Vector3 camera_dir_local = transform.InverseTransformVector(camera_dir);
              */
-            
+
 
             ThirdPersonCam.gameObject.SetActive(false);
             AimCam.gameObject.SetActive(true);
@@ -83,18 +83,32 @@ public class Movements : MonoBehaviour
         }
     }
 
+    public float Atan;
+    public float Dot;
+    public float angleRad;
+    public Vector3 angle_dir;
     private void OnDrawGizmos()
     {
         Vector3 cameraFwd = Camera.main.transform.forward;
-        Vector3 flatten_camera_dir = new Vector3(cameraFwd.x, 0, cameraFwd.z).normalized;
+        Vector3 flatten_camera_dir = new Vector3(cameraFwd.x, 0, cameraFwd.z);
 
-        Gizmos.DrawRay(transform.position, flatten_camera_dir *100);
+        //angleRad = Vector3.Angle(transform.forward, flatten_camera_dir) * Mathf.Deg2Rad;
+        Dot = Vector3.Dot(transform.forward, flatten_camera_dir.normalized);
+        angleRad = Mathf.Acos(Dot);
+        angle_dir = new Vector3(Mathf.Cos(angleRad), 0, Mathf.Sin(angleRad)).normalized;
+
+        Gizmos.DrawRay(transform.position, flatten_camera_dir * 100);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(transform.position, angle_dir * 100);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.TransformPoint( Vector3.forward * 5));
+        //Gizmos.DrawSphere(transform.TransformPoint(Vector3.forward * 5), 1f);
     }
 
     void Update()
     {
         //transform.Rotate(Vector3.up,playerInputs.RotationDir * RotSpeed * Time.deltaTime);
-
         Move();
     }
 
