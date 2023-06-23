@@ -10,10 +10,4 @@ public class BulletData : ScriptableObject
     public float TravelTime;
     public float Damages;
     public Vector3 Gravity;
-
-    public void Shoot(Transform firePoint)
-    {
-        Bullet bullet = Instantiate(Bullet, firePoint.position, Camera.main.transform.rotation).GetComponent<Bullet>();
-        bullet.Initialize(speed: BulletSpeed, gravity: Gravity.y);
-    }
 }

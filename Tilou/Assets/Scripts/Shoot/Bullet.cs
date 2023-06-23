@@ -8,31 +8,43 @@ public class Bullet : MonoBehaviour
 
     private float launchspeed;
     private Rigidbody rb;
-    private float TimeSinceLaunch;
 
     Vector3 Pos;
     Vector3 Vel;
     Vector3 acc = Physics.gravity;
+    private float timeSinceLaunch;
+    [SerializeField] private float MaxLifeTime = 3f;
 
     // -- PROPERTIES
 
+    private float TimeSinceLaunch
+    {
+        get => timeSinceLaunch;
+        set
+        {
+            timeSinceLaunch = value;
+            if (timeSinceLaunch > MaxLifeTime) { Destroy(gameObject); }
+        }
+    }
     public float LaunchSpeed => launchspeed;
     public float TravelTime { get; private set; }
 
     // -- UNITY
+
     private void Start()
     {
         Pos = transform.position;
         Vel = transform.forward * launchspeed;
         rb = GetComponent<Rigidbody>();
     }
+
     void Update()
     {
         if(rb == null) { return; }
         Debug.Log("TESTESTSET");
         TimeSinceLaunch += Time.deltaTime;
         Vector3 next_point = GetPoint(TimeSinceLaunch);
-        Vector3 dirToPoint = (next_point - transform.position).normalized;        
+        Vector3 dirToPoint = (next_point - transform.position).normalized;
         rb.rotation = Quaternion.LookRotation(dirToPoint,Vector3.up);
         rb.position = next_point;
     }
@@ -44,7 +56,6 @@ public class Bullet : MonoBehaviour
         launchspeed = speed;
         acc = new Vector3(0, gravity, 0);
     }
-
 
     private Vector3 GetPoint(float time)
     {

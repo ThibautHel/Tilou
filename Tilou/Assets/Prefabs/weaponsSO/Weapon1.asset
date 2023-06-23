@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2980661528862d447bd8f8ed1b6b2964, type: 3}
   m_Name: Weapon1
   m_EditorClassIdentifier: 
-  PlasmaWeapon: {fileID: 0}
+  BulletData: {fileID: 11400000, guid: 011eac4188749d040b8b1f997056b877, type: 2}
+  weaponVFX: {fileID: 388746399504361389, guid: 98b22d965a193d644a778f996aab65b3, type: 3}
+  OverheatCeiling: 5
+  OverheatReloadTimer: 5
+  FireRate: 0.2
+  HeatPerShot: 0

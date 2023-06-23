@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlasmaBullets
   m_EditorClassIdentifier: 
   Bullet: {fileID: 6669627366268380281, guid: 8ff6c0d4219181f4f8fb61f0dc00e8b4, type: 3}
-  BulletSpeed: 10
+  BulletSpeed: 15
   TravelTime: 0
   Damages: 0
-  Gravity: {x: 0, y: -9.81, z: 0}
+  Gravity: {x: 0, y: 2.8, z: 0}
