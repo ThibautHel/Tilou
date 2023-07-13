@@ -49,26 +49,29 @@ public class Movements : MonoBehaviour
         //PlayerInputs.OnAimChanged.RemoveListener(SetState);
     }
 
-    public float Atan;
-    public float Dot;
-    public float angleRad;
-    public Vector3 angle_dir;
-    private void OnDrawGizmos()
-    {
-        Vector3 cameraFwd = Camera.main.transform.forward;
-        Vector3 flatten_camera_dir = new Vector3(cameraFwd.x, 0, cameraFwd.z);
+    //Drawing
+    //#region
+    //public float Atan;
+    //public float Dot;
+    //public float angleRad;
+    //public Vector3 angle_dir;
+    //private void OnDrawGizmos()
+    //{
+    //    Vector3 cameraFwd = Camera.main.transform.forward;
+    //    Vector3 flatten_camera_dir = new Vector3(cameraFwd.x, 0, cameraFwd.z);
 
-        //angleRad = Vector3.Angle(transform.forward, flatten_camera_dir) * Mathf.Deg2Rad;
-        Dot = Vector3.Dot(transform.forward, flatten_camera_dir.normalized);
-        angleRad = Mathf.Acos(Dot);
-        angle_dir = new Vector3(Mathf.Cos(angleRad), 0, Mathf.Sin(angleRad)).normalized;
+    //    //angleRad = Vector3.Angle(transform.forward, flatten_camera_dir) * Mathf.Deg2Rad;
+    //    Dot = Vector3.Dot(transform.forward, flatten_camera_dir.normalized);
+    //    angleRad = Mathf.Acos(Dot);
+    //    angle_dir = new Vector3(Mathf.Cos(angleRad), 0, Mathf.Sin(angleRad)).normalized;
 
-        Gizmos.DrawRay(transform.position, flatten_camera_dir * 100);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position, angle_dir * 100);
+    //    Gizmos.DrawRay(transform.position, flatten_camera_dir * 100);
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawRay(transform.position, angle_dir * 100);
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.TransformPoint( Vector3.forward * 5));
-        //Gizmos.DrawSphere(transform.TransformPoint(Vector3.forward * 5), 1f);
-    }
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawLine(transform.position, transform.TransformPoint( Vector3.forward * 5));
+    //    //Gizmos.DrawSphere(transform.TransformPoint(Vector3.forward * 5), 1f);
+    //}
+    //#endregion
 }

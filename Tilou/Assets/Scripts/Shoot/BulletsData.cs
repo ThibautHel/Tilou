@@ -10,4 +10,5 @@ public class BulletData : ScriptableObject
     public float TravelTime;
     public float Damages;
     public Vector3 Gravity;
+    public float yVelo;
 }

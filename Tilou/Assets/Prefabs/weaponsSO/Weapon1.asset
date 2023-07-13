@@ -17,4 +17,4 @@ MonoBehaviour:
   OverheatCeiling: 5
   OverheatReloadTimer: 5
   FireRate: 0.2
-  HeatPerShot: 0
+  HeatPerShot: 1
