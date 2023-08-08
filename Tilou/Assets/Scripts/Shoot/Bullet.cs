@@ -58,49 +58,50 @@ public class Bullet : MonoBehaviour
         if (rb == null) { return; }
         TimeSinceLaunch += Time.deltaTime;
 
+      /* CUSTOM PHYSICS*/
+      
         next_point = GetPoint(TimeSinceLaunch, Pos, Vel, acc);
-        //transform.LookAt(transform.position + rb.velocity);
+        transform.LookAt(transform.position + rb.velocity);
         Vector2 pointForward = new Vector2(transform.position.x - CameraPos.x, transform.position.z - CameraPos.z);
         Vector2 pointToCamera = new Vector2(CameraDir.x, CameraDir.z);
 
 
-        if (WedgeProduct(pointToCamera, pointForward) < 0 /*&& !trajectoryAdjusted*/)
-        {
-            // -- FIRST OPTION
-            //rb.velocity = CameraDir * LaunchSpeed;
-            //trajectoryAdjusted = true;
+        //if (WedgeProduct(pointToCamera, pointForward) < 0 && !trajectoryAdjusted)
+        //{
+        //    // -- FIRST OPTION
+        //    //rb.velocity = CameraDir * LaunchSpeed;
+        //    //trajectoryAdjusted = true;
 
-            // -- SECOND TRY
+        //    // -- SECOND TRY
 
-            if (!trajectoryAdjusted)
-            {
-                startpos = transform.position;
-                Vector3 initialVelo = GetVelocity(timeSinceLaunch);
-                startVelo = CameraDir * launchspeed;
-                originalAcc = acc;
-                newTimer = 0;
-                trajectoryAdjusted = true;
-            }
+        //    if (!trajectoryAdjusted)
+        //    {
+        //        startpos = transform.position;
+        //        Vector3 initialVelo = GetVelocity(timeSinceLaunch);
+        //        startVelo = CameraDir * launchspeed;
+        //        originalAcc = acc;
+        //        newTimer = 0;
+        //        trajectoryAdjusted = true;
+        //    }
 
-            Vector3 Pos2Delta = GetPoint(timeSinceLaunch,Pos,Vel, acc);
-            Vector3 relTestpoint =  Pos2Delta - startpos;
+        //    Vector3 Pos2Delta = GetPoint(timeSinceLaunch,Pos,Vel, acc);
+        //    Vector3 relTestpoint =  Pos2Delta - startpos;
 
-            float dot2 = Vector3.Dot(CameraDir.normalized, relTestpoint);
-            Vector3 vectorProj = startpos + CameraDir.normalized * dot2;
+        //    float dot2 = Vector3.Dot(CameraDir.normalized, relTestpoint);
+        //    Vector3 vectorProj = startpos + CameraDir.normalized * dot2;
 
-            next_point = new Vector3(vectorProj.x, Pos2Delta.y, vectorProj.z);
+        //    next_point = new Vector3(vectorProj.x, Pos2Delta.y, vectorProj.z);
 
-
-
-            rb.position = next_point;
-            transform.LookAt(next_point - transform.position);
-        }
-        else
-        {
+        //    rb.position = next_point;
+        //    transform.LookAt(next_point - transform.position);
+        //}
+        //else
+        //{
             Vector3 dirToPoint = (next_point - transform.position).normalized;
             rb.position = next_point;
             rb.rotation = Quaternion.LookRotation(dirToPoint, Vector3.up);
-        }
+        //}
+        
     }
 
     // -- METHODS 
@@ -112,11 +113,13 @@ public class Bullet : MonoBehaviour
         CameraPos = cameraPos;
 
         launchspeed = speed;
-        //Vel = velocityDir; // ShootV2
         acc = new Vector3(0, gravity, 0);
         Damages = damages;
 
-        Vel = DirToCamera.normalized * launchspeed + Vector3.up * yVelo; // ShootV1
+        //Vel = velocityDir; // ShootV1
+        //Vel = DirToCamera.normalized * launchspeed + Vector3.up * yVelo; // ShootV2
+        Vel = transform.forward * launchspeed;  // ShootV3
+
     }
 
     public static float WedgeProduct(Vector2 a, Vector2 b)
@@ -194,6 +197,5 @@ public class Bullet : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(Pos2Delta,new Vector3(vectorProj.x, Pos2Delta.y, vectorProj.z));
-
     }
 }

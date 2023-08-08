@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AimMovements : MovementsBase
@@ -27,6 +28,10 @@ public class AimMovements : MovementsBase
 
         Vector3 move_dir = playerMovements.PlayerInputs.MoveDir;
         playerMovements.transform.Translate(move_dir * Time.deltaTime * playerMovements.Speed);
+
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hitInfo, 500f);
+        Transform currentweapon = playerMovements.gameObject.GetComponent<Shoot>().currentWeaponTransform;
+        currentweapon.forward = hitInfo.point - currentweapon.position;
 
         if (Input.GetMouseButtonUp(1))
         {

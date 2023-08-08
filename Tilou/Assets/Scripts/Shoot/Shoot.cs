@@ -8,7 +8,8 @@ public class Shoot : MonoBehaviour
     // -- VARIABLES
 
     [Header("Weapon")]
-    [SerializeField] private Weapon CurrentWeapon;
+    [SerializeField] public Weapon CurrentWeapon;
+    public Transform currentWeaponTransform;
     [SerializeField] private Transform WeaponHolder;
     [SerializeField] private LayerMask ShootIgnoreLayer;
     private Transform FirePoint;
@@ -47,6 +48,7 @@ public class Shoot : MonoBehaviour
     private void Start()
     {
         GameObject weapon = Instantiate(CurrentWeapon.WeaponVFX, WeaponHolder.transform.position, Quaternion.identity);
+        currentWeaponTransform= weapon.transform;
         weapon.transform.SetParent(WeaponHolder);
         FirePoint = weapon.GetComponent<WeaponGfx>().FirePoint;
 
@@ -74,6 +76,9 @@ public class Shoot : MonoBehaviour
             Debug.DrawLine(Camera.main.transform.position, hitInfo.point,Color.red,20);
             Vector3 dirFromFirepointToRaycast = (hitInfo.point - FirePoint.position);
             Debug.DrawRay(FirePoint.position, dirFromFirepointToRaycast*100,Color.blue,20);
+
+            FirePoint.forward = dirFromFirepointToRaycast;
+
             Vector3 cameraDir = Camera.main.transform.forward;
             Vector3 cameraPos = Camera.main.transform.position;
             CurrentWeapon.Shoot(FirePoint, dirFromFirepointToRaycast ,cameraDir , cameraPos);
@@ -87,26 +92,36 @@ public class Shoot : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 100);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(FirePoint.position, FirePoint.forward*100);
+
+    }
+
     //List<Vector3> drawpts = new List<Vector3>();
     //Vector3 Pos => FirePoint.position;
     //Vector3 Vel => FirePoint.forward * CurrentWeapon.BulletData.BulletSpeed;
     //public Vector3 acc => CurrentWeapon.BulletData.Gravity;
 
-  //  private void OnDrawGizmos()
-  //  {
-        //drawpts.Clear();
-        //for (int i = 0; i < 80; i++)
-        //{
-        //    float t = i / 79f;
-        //    float time = t * 5;
-        //    drawpts.Add(GetPoint(time));
-        //}
+    //  private void OnDrawGizmos()
+    //  {
+    //drawpts.Clear();
+    //for (int i = 0; i < 80; i++)
+    //{
+    //    float t = i / 79f;
+    //    float time = t * 5;
+    //    drawpts.Add(GetPoint(time));
+    //}
 
-        //for (int i = 0; i < 79; i++)
-        //{
-        //    Gizmos.color = Color.blue;
-        //    Gizmos.DrawLine(drawpts[i], drawpts[i + 1]);
-        //}
+    //for (int i = 0; i < 79; i++)
+    //{
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawLine(drawpts[i], drawpts[i + 1]);
+    //}
 
     //}
 

@@ -19,7 +19,7 @@ public class Weapon : ScriptableObject
 
     public void Shoot(Transform FirePoint, Vector3 dirToCameraRay ,Vector3 cameraDir , Vector3 cameraPos)
     {
-        Bullet bullet = Instantiate(BulletData.Bullet, FirePoint.position,Quaternion.LookRotation(dirToCameraRay.normalized,Vector3.up)).GetComponent<Bullet>();
+        Bullet bullet = Instantiate(BulletData.Bullet, FirePoint.position,FirePoint.rotation).GetComponent<Bullet>();
         bullet.Initialize(speed: BulletData.BulletSpeed, dirToCameraRay, cameraDir, cameraPos, BulletData.yVelo, Damage, gravity: BulletData.Gravity.y);
     }
 }
