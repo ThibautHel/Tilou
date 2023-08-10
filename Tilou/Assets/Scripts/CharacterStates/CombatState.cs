@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StandingState : State
+public class CombatState : State
 {
-    public StandingState(CharacterScript _player, StateMachine _stateMahine) : base(_player, _stateMahine)
+    public CombatState(CharacterScript _player, StateMachine _stateMahine) : base(_player, _stateMahine)
     {
     }
 
@@ -14,7 +13,7 @@ public class StandingState : State
         base.Enter();
     }
 
-    public override void Exit() 
+    public override void Exit()
     {
         base.Exit();
     }
@@ -22,12 +21,7 @@ public class StandingState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Player.Animator.SetFloat("speed", Player.Inputs.MoveDir.y,0.1f,Time.deltaTime);
-        if(Input.GetMouseButtonDown(0)) 
-        {
-            StateMachine.ChangeState(Player.CombatState);
-            Player.Animator.SetTrigger("drawWeapon");
-        }
+        Player.Animator.SetFloat("speed", Player.Inputs.MoveDir.y, 0.1f, Time.deltaTime);
     }
 
     public override void HandleInput()
@@ -35,7 +29,7 @@ public class StandingState : State
         base.HandleInput();
     }
 
-    public override void PhysicsUpdate() 
+    public override void PhysicsUpdate()
     {
         Vector3 movement = new Vector3(Player.Inputs.MoveDir.x, 0, Player.Inputs.MoveDir.y) * Player.Speed * Time.deltaTime;
         Player.gameObject.transform.Translate(movement);

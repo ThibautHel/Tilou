@@ -7,7 +7,6 @@ public class State
     public CharacterScript Player;
     public StateMachine StateMachine;
 
-    public Vector2 MoveInput;
     public State(CharacterScript _player, StateMachine _stateMahine) 
     {
         Player = _player;
