@@ -22,11 +22,16 @@ public class StandingState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Player.Animator.SetFloat("speed", Player.Inputs.MoveDir.y,0.1f,Time.deltaTime);
+        Player.Animator.SetFloat("Speed", Player.Inputs.MoveDir.y,0.1f,Time.deltaTime);
+        Debug.Log(Player.Inputs.MoveDir.y);
         if(Input.GetMouseButtonDown(0)) 
         {
+            Player.Animator.SetTrigger("EquipWeapon");
             StateMachine.ChangeState(Player.CombatState);
-            Player.Animator.SetTrigger("drawWeapon");
+        }
+        if(Input.GetKeyDown(KeyCode.Space)) 
+        {
+            Player.Animator.SetTrigger("Jump");
         }
     }
 

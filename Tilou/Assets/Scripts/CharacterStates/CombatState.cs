@@ -21,7 +21,12 @@ public class CombatState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Player.Animator.SetFloat("speed", Player.Inputs.MoveDir.y, 0.1f, Time.deltaTime);
+        Player.Animator.SetFloat("Speed", Player.Inputs.MoveDir.y, 0.1f, Time.deltaTime);
+        if (Input.GetMouseButtonDown(0))
+        {
+            Player.Animator.SetTrigger("Attack");
+            StateMachine.ChangeState(Player.AttackState);
+        }
     }
 
     public override void HandleInput()

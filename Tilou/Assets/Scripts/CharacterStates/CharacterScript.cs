@@ -7,9 +7,10 @@ public class CharacterScript : MonoBehaviour
 {
     public Animator Animator;
     public CharachterInputs Inputs;
-    private StateMachine CharachterSM;
+    public StateMachine CharachterSM;
     public State StandingState;
     public State CombatState;
+    public State AttackState;
 
     public float Speed = 5f;
 
@@ -19,6 +20,7 @@ public class CharacterScript : MonoBehaviour
         CharachterSM = new StateMachine();
         StandingState = new StandingState(this,CharachterSM);
         CombatState = new CombatState(this,CharachterSM);
+        AttackState = new AttackState(this,CharachterSM);
 
         CharachterSM.Initialize(StandingState);
     }
@@ -32,5 +34,11 @@ public class CharacterScript : MonoBehaviour
     private void FixedUpdate()
     {
         CharachterSM.CurrentState.PhysicsUpdate();
+    }
+
+    public void EndAttack()
+    {
+        CharachterSM.ChangeState(CombatState);
+        Debug.Log("CALLED");
     }
 }
