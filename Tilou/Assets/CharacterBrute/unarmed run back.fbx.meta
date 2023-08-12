@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fb516441443c8e04bb3f059b79d4bb9a
+guid: ee16e17a85300a54b899ca98af05415e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: walk_fwd
+      name: run_bwd
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 41
+      lastFrame: 23
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
