@@ -39,7 +39,7 @@ public class AttackState : State
         base.LogicUpdate();
 
         timePassed += Time.deltaTime;
-            ResetClip();
+        ResetClip();
 
         if (timePassed >= clipLength / clipSpeed && attack)
         {
