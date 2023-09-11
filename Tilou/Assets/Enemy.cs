@@ -2,17 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IHealth
 {
-    // Start is called before the first frame update
-    void Start()
+    public UnitStats Stats;
+    public float currentHealth = 0f;
+
+    public float CurrentHealth { get; private set; }
+
+    public float MaxHealth { get; private set; }
+
+    public void TakeDmg(float Dmg)
     {
-        
+        currentHealth -= Dmg;
+        Debug.Log("Took " + Dmg + "Damages");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        MaxHealth = Stats.maxHealth;
+        currentHealth = MaxHealth;
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        TakeDmg(AnimationManager.Instance.CurrentAnimData.Damages);
     }
 }

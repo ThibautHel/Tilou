@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatState : State
 {
-    public CombatState(CharacterScript _player, StateMachine _stateMahine) : base(_player, _stateMahine)
+    public CombatState(CharacterScript _player) : base(_player)
     {
     }
 
@@ -21,11 +19,10 @@ public class CombatState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Player.Animator.SetFloat("Speed", Player.Inputs.MoveDir.y, 0.1f, Time.deltaTime);
+        Player.Animator.SetFloat("Speed", Player.Inputs.MoveDir.magnitude, 0.1f, Time.deltaTime);
         if (Input.GetMouseButtonDown(0))
         {
-            Player.Animator.SetTrigger("Attack");
-            StateMachine.ChangeState(Player.AttackState);
+            Player.CharachterSM.ChangeState(Player.AttackState);
         }
     }
 
@@ -36,7 +33,14 @@ public class CombatState : State
 
     public override void PhysicsUpdate()
     {
-        Vector3 movement = new Vector3(Player.Inputs.MoveDir.x, 0, Player.Inputs.MoveDir.y) * Player.Speed * Time.deltaTime;
-        Player.gameObject.transform.Translate(movement);
+        if (Player.Inputs.MoveDir.magnitude > 0)
+        {
+            float targetAngle = Mathf.Atan2(Player.Inputs.MoveDir.x, Player.Inputs.MoveDir.y) * Mathf.Rad2Deg + Player.MainCam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(Player.transform.eulerAngles.y, targetAngle, ref Player.TurnVelo, Player.TurnSmoothTime);
+            Player.transform.rotation = Quaternion.AngleAxis(angle, Player.transform.up);
+            Debug.Log(angle);
+            Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+            Player.transform.Translate(moveDir.normalized * Time.deltaTime * Player.PlayerSpeed, Space.World);
+        }
     }
 }

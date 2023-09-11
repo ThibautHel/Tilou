@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AimMovements : MovementsBase
@@ -20,6 +18,9 @@ public class AimMovements : MovementsBase
         //float angle = Mathf.SmoothDampAngletten_camera.x, flatten_camera.z) * Mathf.Rad2Deg;
 
         float target_angle = Mathf.Atan2(flatten_camera.x, flatten_camera.z) * Mathf.Rad2Deg;
+        Debug.Log("TAN " + flatten_camera.x / flatten_camera.z);
+        Debug.Log("X is " + flatten_camera.x);
+        Debug.Log("Z is " + flatten_camera.z);
         float angle = Mathf.SmoothDampAngle(playerMovements.transform.eulerAngles.y, target_angle, ref playerMovements.TurnVelo, playerMovements.TurnSmoothTime);
 
         //transform.rotation = Quaternion.LookRotation(flatten_camera, transform.up);

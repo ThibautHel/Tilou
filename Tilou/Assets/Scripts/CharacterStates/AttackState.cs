@@ -1,17 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.Events;
 
 public class AttackState : State
 {
+    AnimationClip CurrentClip = null;
     float timePassed;
     float clipLength;
     float clipSpeed;
     bool attack;
-    public AttackState(CharacterScript _player, StateMachine _stateMachine) : base(_player, _stateMachine)
+    bool AppliedDamages = false;
+
+    public UnityEvent ClipStart = new UnityEvent();
+    public UnityEvent ClipEnd = new UnityEvent();
+
+    public AttackState(CharacterScript _player) : base(_player)
     {
     }
 
@@ -19,10 +21,13 @@ public class AttackState : State
     {
         base.Enter();
 
-        attack = false;
+        attack = true;
         timePassed = 0f;
-        Player.Animator.SetTrigger("Attack");
+        Player.Animator.SetBool("isAttacking", true);
         Player.Animator.SetFloat("Speed", 0f);
+
+        ClipStart.AddListener(ResetAttack);
+        ClipEnd.AddListener(EndAttack);
     }
 
     public override void HandleInput()
@@ -32,6 +37,7 @@ public class AttackState : State
         if (Input.GetMouseButtonDown(0))
         {
             attack = true;
+            Player.Animator.SetBool("isAttacking", true);
         }
     }
     public override void LogicUpdate()
@@ -40,29 +46,49 @@ public class AttackState : State
 
         timePassed += Time.deltaTime;
         ResetClip();
-
-        if (timePassed >= clipLength / clipSpeed && attack)
-        {
-            //StateMachine.ChangeState(Player.AttackState);
-            Player.Animator.SetTrigger("Attack");
-            attack = false;
-            timePassed = 0;
-        }
-        if (timePassed >= clipLength / clipSpeed && !attack)
-        {
-            StateMachine.ChangeState(Player.CombatState);
-        }
-
     }
 
     private void ResetClip()
     {
+        if (CurrentClip != Player.Animator.GetCurrentAnimatorClipInfo(1)[0].clip)
+        {
+            ClipStart.Invoke();
+            CurrentClip = Player.Animator.GetCurrentAnimatorClipInfo(1)[0].clip;
+        }
+
+        if (timePassed >= clipLength / clipSpeed)
+        {
+            ClipEnd.Invoke();
+        }
+
         clipLength = Player.Animator.GetCurrentAnimatorClipInfo(1)[0].clip.length;
         clipSpeed = Player.Animator.GetCurrentAnimatorStateInfo(1).speed;
+    }
+
+    private void ResetAttack()
+    {
+        if (attack)
+        {
+            Player.Animator.SetBool("isAttacking", false);
+            attack = false;
+            timePassed = 0;
+
+        }
+    }
+
+    private void EndAttack()
+    {
+        if (!attack)
+        {
+            Player.CharachterSM.ChangeState(Player.CombatState);
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        ClipStart.RemoveListener(ResetAttack);
+        ClipEnd.RemoveListener(ResetAttack);
     }
 }

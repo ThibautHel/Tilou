@@ -82,8 +82,8 @@ public class Bullet : MonoBehaviour
                 trajectoryAdjusted = true;
             }
 
-            Vector3 Pos2Delta = GetPoint(timeSinceLaunch,Pos,Vel, acc);
-            Vector3 relTestpoint =  Pos2Delta - startpos;
+            Vector3 Pos2Delta = GetPoint(timeSinceLaunch, Pos, Vel, acc);
+            Vector3 relTestpoint = Pos2Delta - startpos;
 
             float dot2 = Vector3.Dot(CameraDir.normalized, relTestpoint);
             Vector3 vectorProj = startpos + CameraDir.normalized * dot2;
@@ -105,18 +105,18 @@ public class Bullet : MonoBehaviour
 
     // -- METHODS 
 
-    public void Initialize(float speed, Vector3 dirFromFirepointToRaycastHit, Vector3 _CameraDir, Vector3 cameraPos, float yVelo, float damages, float gravity = -9.81f)
+    public void Initialize(BulletData bulletData, Vector3 dirFromFirepointToRaycastHit, Vector3 _CameraDir, Vector3 cameraPos)
     {
         DirToCamera = dirFromFirepointToRaycastHit;
         CameraDir = _CameraDir;
         CameraPos = cameraPos;
 
-        launchspeed = speed;
+        launchspeed = bulletData.BulletSpeed;
         //Vel = velocityDir; // ShootV2
-        acc = new Vector3(0, gravity, 0);
-        Damages = damages;
+        acc = bulletData.Gravity;
+        Damages = bulletData.Damages;
 
-        Vel = DirToCamera.normalized * launchspeed + Vector3.up * yVelo; // ShootV1
+        Vel = DirToCamera.normalized * launchspeed + Vector3.up * bulletData.yVelo; // ShootV1
     }
 
     public static float WedgeProduct(Vector2 a, Vector2 b)
@@ -193,7 +193,7 @@ public class Bullet : MonoBehaviour
 
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(Pos2Delta,new Vector3(vectorProj.x, Pos2Delta.y, vectorProj.z));
+        Gizmos.DrawLine(Pos2Delta, new Vector3(vectorProj.x, Pos2Delta.y, vectorProj.z));
 
     }
 }

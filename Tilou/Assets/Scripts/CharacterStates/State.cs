@@ -1,21 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class State
 {
     public CharacterScript Player;
-    public StateMachine StateMachine;
+    public bool isMoving;
 
-    public State(CharacterScript _player, StateMachine _stateMahine) 
+    public State(CharacterScript _player)
     {
         Player = _player;
-        StateMachine = _stateMahine;
     }
 
-    public virtual void Enter() {}
+    public virtual void Enter() { }
     public virtual void Exit() { }
-    public virtual void LogicUpdate() { }
+    public virtual void LogicUpdate()
+    {
+        isMoving = Player.Inputs.MoveDir != Vector2.zero;
+    }
     public virtual void PhysicsUpdate() { }
     public virtual void HandleInput() { }
 

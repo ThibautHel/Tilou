@@ -79365,10 +79365,17 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 1.3333334
-    functionName: ApplyDamage
+  - time: 0.7
+    functionName: StartAttack
     data: 
     objectReferenceParameter: {fileID: 11400000, guid: 83fafc5efe2c29c4a9bf92c3f42910a9, type: 2}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.2666667
+    functionName: EndAttack
+    data: 
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

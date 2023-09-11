@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StandingState : State
 {
-    public StandingState(CharacterScript _player, StateMachine _stateMahine) : base(_player, _stateMahine)
+    public StandingState(CharacterScript _player) : base(_player)
     {
     }
 
@@ -14,7 +11,7 @@ public class StandingState : State
         base.Enter();
     }
 
-    public override void Exit() 
+    public override void Exit()
     {
         base.Exit();
     }
@@ -22,16 +19,22 @@ public class StandingState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Player.Animator.SetFloat("Speed", Player.Inputs.MoveDir.y,0.1f,Time.deltaTime);
+        Player.Animator.SetFloat("Speed", Player.Inputs.MoveDir.y, 0.1f, Time.deltaTime);
         Debug.Log(Player.Inputs.MoveDir.y);
-        if(Input.GetMouseButtonDown(0)) 
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Player.Animator.SetTrigger("EquipWeapon");
+        //    Player.CharachterSM.ChangeState(Player.CombatState);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Player.Animator.SetTrigger("Jump");
+        //}
+
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            Player.Animator.SetTrigger("EquipWeapon");
-            StateMachine.ChangeState(Player.CombatState);
-        }
-        if(Input.GetKeyDown(KeyCode.Space)) 
-        {
-            Player.Animator.SetTrigger("Jump");
+            Player.Animator.SetTrigger("SwapWeapon");
+            Player.CharachterSM.ChangeState(Player.RangedState);
         }
     }
 
@@ -40,9 +43,9 @@ public class StandingState : State
         base.HandleInput();
     }
 
-    public override void PhysicsUpdate() 
+    public override void PhysicsUpdate()
     {
-        Vector3 movement = new Vector3(Player.Inputs.MoveDir.x, 0, Player.Inputs.MoveDir.y) * Player.Speed * Time.deltaTime;
+        Vector3 movement = new Vector3(Player.Inputs.MoveDir.x, 0, Player.Inputs.MoveDir.y) * Player.PlayerSpeed * Time.deltaTime;
         Player.gameObject.transform.Translate(movement);
     }
 }
